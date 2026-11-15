@@ -6,6 +6,12 @@
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex,nofollow">
 <title>Member Portal</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#14305a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Dessie Amba">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>:root{--ink:#12263a;--mute:#5d6f82;--navy:#0b3a82;--navy2:#14305a;--teal:#0b4aa8;--bg:#eef2f8;--card:#fff;--line:#dbe3ee;--red:#c2410c;--green:#15803d;--soft:#f3f6fb;--shadow:0 2px 10px rgba(16,42,67,.08)}
 @media (prefers-color-scheme:dark){:root{--ink:#e6eef7;--mute:#9db0c4;--navy:#0a2a5e;--navy2:#0b1f44;--teal:#5b9bff;--bg:#0c1624;--card:#14233a;--line:#26395a;--red:#ff9a62;--green:#6ee7a0;--soft:#1a2c47;--shadow:0 2px 12px rgba(0,0,0,.35)}}
 *{box-sizing:border-box}
@@ -78,6 +84,7 @@ td.l,th.l{text-align:left;white-space:normal;min-width:110px}
     <label id="t_pin"></label><input id="pin" type="password" inputmode="numeric" autocomplete="current-password" maxlength="12" onkeydown="if(event.key==='Enter')doLogin()">
     <div class="err" id="err"></div>
     <button class="go" id="gob" onclick="doLogin()"></button>
+    <div id="inst" class="note noprint" style="margin-top:14px;text-align:center"></div>
   </div>
   <div id="view" class="hide"></div>
 </div>
@@ -86,7 +93,7 @@ td.l,th.l{text-align:left;white-space:normal;min-width:110px}
 var SB_URL="https://kulfrqucsvpdierklxmu.supabase.co",SB_KEY="sb_publishable_5q5IZJNSzM2bcro7xr_vQA_KBoUgoUz";
 var L="am",DATA=null,UPD=null,idle=null,sb=null,CRED=null,POLL=null;
 var T={
- am:{org:"ደሴ አምባ ኃ/የተወሰነ የህብረት ስራ ማህበራት የገንዘብ ቁጠባና ብድር ዩኒዬን",login:"የአባላት መግቢያ",loginN:"የሂሳብ ቁጥርዎንና ከዩኒየኑ የተሰጠዎትን PIN ያስገቡ።",acc:"የሂሳብ ቁጥር",pin:"PIN",go:"ግባ",wait:"⏳ በመግባት ላይ…",
+ am:{tgT:"📨 የክፍያ ማስታወሻ በቴሌግራም",tgN:"የብድር ክፍያ ቀን ሲቃረብ በቴሌግራም ማስታወሻ ይላክልዎታል። ቀሪ ሂሳብ አይላክም፤ PIN በቴሌግራም አይጠየቅም።",tgOK:"✓ ቴሌግራም ተገናኝቷል",tgB:"ቴሌግራም አገናኝ",tgRe:"እንደገና አገናኝ",tgErr:"አልተሳካም። እባክዎ ቆይተው ይሞክሩ።",inst:"📲 እንደ መተግበሪያ ጫን",instIos:"📲 በስልክዎ ላይ እንደ መተግበሪያ ለመጫን፦ የShare (ማጋሪያ) ቁልፍን ይጫኑ፣ ከዚያ «Add to Home Screen» ይምረጡ።",org:"ደሴ አምባ ኃ/የተወሰነ የህብረት ስራ ማህበራት የገንዘብ ቁጠባና ብድር ዩኒዬን",login:"የአባላት መግቢያ",loginN:"የሂሳብ ቁጥርዎንና ከዩኒየኑ የተሰጠዎትን PIN ያስገቡ።",acc:"የሂሳብ ቁጥር",pin:"PIN",go:"ግባ",wait:"⏳ በመግባት ላይ…",
   invalid:"የሂሳብ ቁጥር ወይም PIN ትክክል አይደለም።",locked:"ብዙ ጊዜ ተሳስተዋል። ከ30 ደቂቃ በኋላ ይሞክሩ ወይም ወደ ዩኒየኑ ቢሮ ይጠይቁ።",net:"ግንኙነት አልተሳካም — ኢንተርኔት ያረጋግጡ።",nodata:"ዳታዎ ገና አልታተመም — ወደ ቢሮ ይጠይቁ።",empty:"ሁለቱንም ያስገቡ።",
   hi:"ሰላም",asof:"እስከ",upd:"የተዘመነው",ec:"(ኢ.ዘ.አ)",sum:"አጠቃላይ",sav:"ጠቅላላ ቁጠባና ዕጣ",lnb:"የብድር ቀሪ",ir:"ተሰብሳቢ ወለድ",pen:"ቅጣት",
   savT:"ቁጠባና ዕጣ",lnT:"ብድሮች",bal:"ቀሪ",stmt:"መግለጫ ይመልከቱ",sched:"የክፍያ መርሐ ግብር",hist:"የብድር እንቅስቃሴ",
@@ -95,7 +102,7 @@ var T={
   more:"ከዚህ በፊት ያሉ {n} ግብይቶች አይታዩም — ሙሉ መግለጫ ለማግኘት ቢሮ ይጠይቁ።",none:"ግብይት የለም",noSav:"ምንም ቁጠባ የለም",noLn:"ምንም ንቁ ብድር የለም",interest:"ወለድ",
   foot:"ይህ መረጃ ለማመልከቻ ብቻ ነው። ልዩነት ካለ የዩኒየኑ መዝገብ ይወሰናል።",idle:"ለደህንነት ሲባል ከ5 ደቂቃ በኋላ ወጥተዋል።",
   k:{sh:"ዕጣ",s1:"መደበኛ ቁጠባ",s2:"ዝግ ቁጠባ",s3:"የግዜ ገደብ",s4:"መ/ያልሆነ ቁጠባ",l1:"የአጭር ጊዜ ብድር",l2:"የመካከለኛ ጊዜ ብድር",l3:"የረጅም ጊዜ ብድር"}},
- en:{org:"Dessie Amba Limited Cooperative Societies Saving and Credit Union",login:"Member Login",loginN:"Enter your account number and the PIN given to you by the union.",acc:"Account number",pin:"PIN",go:"Sign in",wait:"⏳ Signing in…",
+ en:{tgT:"📨 Payment reminders on Telegram",tgN:"You will get a Telegram reminder when a loan payment is due. No balances are sent and your PIN is never asked on Telegram.",tgOK:"✓ Telegram connected",tgB:"Connect Telegram",tgRe:"Reconnect",tgErr:"Failed. Please try again later.",inst:"📲 Install as an app",instIos:"📲 To install on your phone: tap the Share button, then choose “Add to Home Screen”.",org:"Dessie Amba Limited Cooperative Societies Saving and Credit Union",login:"Member Login",loginN:"Enter your account number and the PIN given to you by the union.",acc:"Account number",pin:"PIN",go:"Sign in",wait:"⏳ Signing in…",
   invalid:"Account number or PIN is incorrect.",locked:"Too many wrong attempts. Try again after 30 minutes or ask the union office.",net:"Connection failed — check your internet.",nodata:"Your data has not been published yet — please ask the office.",empty:"Please enter both.",
   hi:"Hello",asof:"As of",upd:"Updated",ec:"(E.C.)",sum:"Summary",sav:"Total savings & share",lnb:"Loan balance",ir:"Interest receivable",pen:"Penalty",
   savT:"Savings & share",lnT:"Loans",bal:"Balance",stmt:"View statement",sched:"Repayment schedule",hist:"Loan activity",
@@ -156,8 +163,28 @@ function render(){
       '<div class="row"><span>'+t("rate")+'</span><b>'+esc(a.rate)+'%</b></div><div class="row"><span>'+t("ir")+'</span><b>'+f(a.ir)+'</b></div><div class="row"><span>'+t("pen")+'</span><b>'+f(a.pen)+'</b></div>'+(a.mat?'<div class="row"><span>'+t("mat")+'</span><b>'+esc(a.mat)+'</b></div>':"")+nx+
       (a.sched&&a.sched.length?'<details><summary>'+t("sched")+'</summary><div class="tw"><table><thead><tr><th>'+t("no")+'</th><th class="l">'+t("date")+'</th><th>'+t("pr")+'</th><th>'+t("it")+'</th><th>'+t("st")+'</th></tr></thead><tbody>'+a.sched.map(function(x){return'<tr><td>'+x.i+'</td><td class="l">'+esc(x.d)+'</td><td>'+f(x.pr)+'</td><td>'+f(x.it)+'</td><td>'+(x.paid?'<span class="ok">'+t("paid")+'</span>':(x.late>0?'<span class="bad">'+t("late")+' ('+x.late+')</span>':t("due")))+'</td></tr>'}).join("")+'</tbody></table></div></details>':"")+
       '<details><summary>'+t("hist")+'</summary>'+lnTable(a.tx,a.more)+'</details></div>'}).join(""):'<p class="note">'+t("noLn")+'</p>')+'</div>';
-  h+='<div class="note" style="margin:10px 4px">'+t("foot")+'</div><div class="acts noprint"><button class="btn" onclick="window.print()">'+t("print")+'</button><button class="btn" onclick="logout()">'+t("out2")+'</button></div>';
-  document.getElementById("view").innerHTML=h}
+  h+='<div id="tgbox" class="noprint"></div><div class="note" style="margin:10px 4px">'+t("foot")+'</div><div class="acts noprint"><button class="btn" onclick="window.print()">'+t("print")+'</button><button class="btn" onclick="logout()">'+t("out2")+'</button></div>';
+  document.getElementById("view").innerHTML=h;tgInit()}
+var instEv=null;
+function instUI(){var b=document.getElementById("inst");if(!b)return;
+  var st=(window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone;
+  if(st){b.innerHTML="";return}
+  if(instEv){b.innerHTML='<button class="btn" type="button" onclick="instGo()">'+t("inst")+'</button>';return}
+  var ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  b.innerHTML=ios?esc(t("instIos")):""}
+function tgInit(){var b=document.getElementById("tgbox");if(!b||!CRED)return;
+  sb.rpc("member_tg",{p_acc:CRED.a,p_pin:CRED.p,p_make:false}).then(function(r){var d=r&&r.data;
+    if(!d||!d.ok||!d.bot){b.innerHTML="";return}
+    b.innerHTML='<div class="card"><h2>'+t("tgT")+'</h2><p class="note">'+t("tgN")+'</p>'+(d.linked?'<p class="note" style="color:var(--green);font-weight:700">'+t("tgOK")+'</p>':"")+'<button class="btn" type="button" onclick="tgGo()">'+(d.linked?t("tgRe"):t("tgB"))+'</button></div>'},function(){b.innerHTML=""})}
+function tgGo(){if(!CRED)return;
+  sb.rpc("member_tg",{p_acc:CRED.a,p_pin:CRED.p,p_make:true}).then(function(r){var d=r&&r.data;
+    if(!d||!d.ok||!d.code||!d.bot)return alert(t("tgErr"));
+    location.href="https://t.me/"+encodeURIComponent(d.bot)+"?start="+d.code},function(){alert(t("tgErr"))})}
+function instGo(){if(!instEv)return;instEv.prompt();instEv.userChoice.then(function(){instEv=null;instUI()},function(){})}
+window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();instEv=e;instUI()});
+window.addEventListener("appinstalled",function(){instEv=null;instUI()});
+var _paint=paint;paint=function(){_paint();instUI()};
+if("serviceWorker"in navigator&&(location.protocol==="https:"||location.hostname==="localhost"))window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});
 try{var sl=localStorage.getItem("mp_lang");if(sl==="en"||sl==="am")L=sl}catch(e){}
 paint();
 </script>
